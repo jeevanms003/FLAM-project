@@ -59,13 +59,14 @@ app.post("/api/generate", async (req, res) => {
     dotenv.config({ path: resolve(__dirname, "../.env"), override: true });
     const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
     const completion = await groq.chat.completions.create({
-      model: "openai/gpt-oss-20b",
+      model: "openai/gpt-oss-120b",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: `Plan this trip: ${prompt.trim()}` },
       ],
       temperature: 0.7,
-      max_tokens: 2048,
+      max_tokens: 3000,
+      response_format: { type: "json_object" },
     });
 
     const raw = completion.choices?.[0]?.message?.content;
