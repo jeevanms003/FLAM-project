@@ -27,7 +27,7 @@ The JSON must exactly match this shape:
 }
 
 Rules:
-- Every id must be a unique short string like "day-1", "stop-1-1", etc.
+- Maximum 3 stops per day. Keep descriptions under 15 words. Keep tips under 12 words.
 - days array must have at least 1 item.
 - Each day must have at least 1 stop.
 - type must be exactly one of: attraction, food, hotel, transport
@@ -60,13 +60,13 @@ export default async function handler(req, res) {
 
   try {
     const completion = await groq.chat.completions.create({
-      model: "qwen/qwen3.8-27b",
+      model: "openai/gpt-oss-20b",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: `Plan this trip: ${prompt.trim()}` },
       ],
       temperature: 0.7,
-      max_tokens: 4096,
+      max_tokens: 2048,
     });
 
     const raw = completion.choices?.[0]?.message?.content;
